@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analog Clock</title>
+<style>
+  :root {
+    --bg: #10151d;
+    --face: #1b2330;
+    --rim: #2e3c50;
+    --tick: #8fa3bd;
+    --text: #e8eef6;
+    --accent: #e05252;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+  canvas { max-width: 90vw; height: auto; }
+  #digital {
+    font-size: 2.4rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+  }
+  #date {
+    font-size: 1.15rem;
+    color: var(--tick);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="clock" width="360" height="360" role="img" aria-label="Analog clock"></canvas>
+<div id="digital">--:--:--</div>
+<div id="date">&nbsp;</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const canvas  = document.getElementById('clock');
+  const ctx     = canvas.getContext('2d');
+  const digital = document.getElementById('digital');
+  const dateEl  = document.getElementById('date');
+
+  const css = getComputedStyle(document.documentElement);
+  const col = (name) => css.getPropertyValue(name).trim();
+
+  const SIZE   = canvas.width;
+  const CENTER = SIZE / 2;
+  const RADIUS = SIZE / 2 - 10;
+
+  const pad = (n) => String(n).padStart(2, '0');
+
+  function drawFace() {
+    // dial
+    ctx.beginPath();
+    ctx.arc(CENTER, CENTER, RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = col('--face');
+    ctx.fill();
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = col('--rim');
+    ctx.stroke();
+
+    // minute + hour ticks
+    for (let i = 0; i < 60; i++) {
+      const angle = (i * Math.PI) / 30;
+      const isHour = i % 5 === 0;
+      const inner = RADIUS - (isHour ? 22 : 12);
+      const outer = RADIUS - 6;
+      ctx.beginPath();
+      ctx.moveTo(CENTER + inner * Math.sin(angle), CENTER - inner * Math.cos(angle));
+      ctx.lineTo(CENTER + outer * Math.sin(angle), CENTER - outer * Math.cos(angle));
+      ctx.lineWidth = isHour ? 4 : 1.5;
+      ctx.strokeStyle = col('--tick');
+      ctx.stroke();
+    }
+
+    // hour numerals
+    ctx.fillStyle = col('--text');
+    ctx.font = `600 ${SIZE * 0.075}px "Segoe UI", system-ui, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (let n = 1; n <= 12; n++) {
+      const angle = (n * Math.PI) / 6;
+      const r = RADIUS - 42;
+      ctx.fillText(String(n), CENTER + r * Math.sin(angle), CENTER - r * Math.cos(angle));
+    }
+  }
+
+  function drawHand(angle, length, width, color, tail = 12) {
+    ctx.save();
+    ctx.translate(CENTER, CENTER);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(0, tail);          // short tail behind the pivot
+    ctx.lineTo(0, -length);
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = color;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function render() {
+    const now = new Date();
+    const h = now.getHours();
+    const m = now.getMinutes();
+    const s = now.getSeconds();
+    const ms = now.getMilliseconds();
+
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    drawFace();
+
+    const secAngle  = ((s + ms / 1000) * Math.PI) / 30;   // sweeping second hand
+    const minAngle  = ((m + s / 60) * Math.PI) / 30;
+    const hourAngle = (((h % 12) + m / 60) * Math.PI) / 6;
+
+    drawHand(hourAngle, RADIUS * 0.50, 7, col('--text'));
+    drawHand(minAngle,  RADIUS * 0.72, 5, col('--text'));
+    drawHand(secAngle,  RADIUS * 0.80, 2, col('--accent'), 20);
+
+    // center hub
+    ctx.beginPath();
+    ctx.arc(CENTER, CENTER, 7, 0, Math.PI * 2);
+    ctx.fillStyle = col('--accent');
+    ctx.fill();
+
+    // digital time + date
+    digital.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    dateEl.textContent = now.toLocaleDateString(undefined, {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    requestAnimationFrame(render);
+  }
+
+  render();
+})();
+</script>
+
+</body>
+</html>
