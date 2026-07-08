@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPR Controls Ltd — Control Systems &amp; Industrial Automation Engineers, Cheshire</title>
+<meta name="description" content="DPR Controls Ltd: independent control systems engineers in Congleton, Cheshire. PLC &amp; SCADA programming, system migrations and upgrades, panel building and electrical installation for the manufacturing sector.">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy-2: #13263a;
+    --steel: #1b3a5b;
+    --ink: #22303f;
+    --body: #46586b;
+    --line: #dde5ec;
+    --bg: #ffffff;
+    --bg-soft: #f4f7fa;
+    --accent: #f59e0b;
+    --accent-dark: #d97706;
+    --blue: #2286d3;
+    --radius: 14px;
+    --max: 1120px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--body);
+    background: var(--bg);
+    line-height: 1.65;
+    font-size: 16.5px;
+  }
+  h1, h2, h3, h4 { color: var(--ink); line-height: 1.2; font-weight: 700; }
+  a { color: var(--blue); text-decoration: none; }
+  img { max-width: 100%; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(13, 27, 42, 0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .brand { display: flex; align-items: center; gap: 12px; color: #fff; font-weight: 700; font-size: 1.18rem; letter-spacing: 0.2px; }
+  .brand .mark {
+    width: 38px; height: 38px; border-radius: 9px; flex: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display: grid; place-items: center; color: var(--navy); font-weight: 800; font-size: 0.95rem;
+  }
+  .brand small { display: block; font-size: 0.68rem; font-weight: 500; color: #9fb3c8; letter-spacing: 1.4px; text-transform: uppercase; }
+  nav.links { display: flex; gap: 26px; align-items: center; }
+  nav.links a { color: #c9d6e2; font-size: 0.95rem; font-weight: 500; }
+  nav.links a:hover { color: #fff; }
+  .cta-btn {
+    background: var(--accent); color: var(--navy) !important; font-weight: 700;
+    padding: 10px 20px; border-radius: 8px; transition: background 0.2s;
+  }
+  .cta-btn:hover { background: #fbbf24; }
+  .menu-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 8px; }
+  .menu-toggle span { display: block; width: 24px; height: 2px; background: #fff; margin: 5px 0; border-radius: 2px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    background:
+      radial-gradient(1000px 500px at 85% -10%, rgba(34,134,211,0.25), transparent 60%),
+      radial-gradient(700px 400px at -10% 110%, rgba(245,158,11,0.12), transparent 60%),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #d6e2ee;
+    padding: 92px 0 84px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(800px 500px at 70% 30%, #000 0%, transparent 75%);
+  }
+  .hero .wrap { position: relative; z-index: 1; }
+  .kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 22px;
+  }
+  .kicker::before { content: ""; width: 28px; height: 2px; background: var(--accent); }
+  .hero h1 { color: #fff; font-size: clamp(2rem, 4.6vw, 3.3rem); max-width: 17ch; margin-bottom: 22px; letter-spacing: -0.5px; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p.lede { font-size: 1.16rem; max-width: 56ch; margin-bottom: 36px; color: #b8c7d6; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 14px 28px; border-radius: 9px; font-weight: 700; font-size: 1rem;
+    transition: transform 0.15s, background 0.2s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--accent); color: var(--navy); }
+  .btn-primary:hover { background: #fbbf24; }
+  .btn-ghost { border: 1.5px solid rgba(255,255,255,0.35); color: #fff; }
+  .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.06); }
+  .hero-badges { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 52px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.12); }
+  .hero-badges div strong { display: block; color: #fff; font-size: 1.35rem; }
+  .hero-badges div span { font-size: 0.86rem; color: #8ea4b8; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 84px 0; }
+  section.alt { background: var(--bg-soft); }
+  .sec-head { max-width: 640px; margin-bottom: 48px; }
+  .sec-head .kicker { color: var(--accent-dark); }
+  .sec-head h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); margin-bottom: 14px; letter-spacing: -0.3px; }
+
+  /* Services */
+  .grid { display: grid; gap: 22px; }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .card {
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 28px; transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover { box-shadow: 0 12px 32px rgba(13,27,42,0.09); transform: translateY(-3px); }
+  .card .icon {
+    width: 48px; height: 48px; border-radius: 11px; margin-bottom: 18px;
+    background: linear-gradient(135deg, #eaf3fb, #dcecf8);
+    display: grid; place-items: center; color: var(--steel);
+  }
+  .card h3 { font-size: 1.14rem; margin-bottom: 10px; }
+  .card p { font-size: 0.95rem; }
+  .card ul { margin: 12px 0 0 0; padding-left: 18px; font-size: 0.92rem; }
+  .card li { margin-bottom: 5px; }
+
+  /* Platforms strip */
+  .platforms { background: var(--navy); padding: 34px 0; }
+  .platforms .wrap { display: flex; align-items: center; gap: 18px 40px; flex-wrap: wrap; justify-content: center; }
+  .platforms span.label { color: #8ea4b8; font-size: 0.8rem; letter-spacing: 1.6px; text-transform: uppercase; font-weight: 600; }
+  .platforms b { color: #e6eef5; font-size: 1.05rem; font-weight: 600; white-space: nowrap; }
+
+  /* Process */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; counter-reset: step; }
+  .step { position: relative; padding: 26px 22px 22px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); }
+  .step::before {
+    counter-increment: step; content: counter(step, decimal-leading-zero);
+    display: block; font-size: 0.85rem; font-weight: 800; color: var(--accent-dark);
+    letter-spacing: 1px; margin-bottom: 12px;
+  }
+  .step h3 { font-size: 1.02rem; margin-bottom: 8px; }
+  .step p { font-size: 0.9rem; }
+
+  /* About / why */
+  .split { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+  .split .points { display: grid; gap: 18px; margin-top: 26px; }
+  .point { display: flex; gap: 14px; align-items: flex-start; }
+  .point .tick {
+    flex: none; width: 26px; height: 26px; border-radius: 50%; margin-top: 2px;
+    background: #e8f5ee; color: #16794c; display: grid; place-items: center; font-size: 0.85rem; font-weight: 800;
+  }
+  .point b { color: var(--ink); }
+  .panel-visual {
+    border-radius: var(--radius); overflow: hidden;
+    background: linear-gradient(160deg, var(--steel), var(--navy));
+    color: #d6e2ee; padding: 38px 34px;
+    box-shadow: 0 24px 48px rgba(13,27,42,0.25);
+  }
+  .panel-visual h3 { color: #fff; font-size: 1.25rem; margin-bottom: 8px; }
+  .panel-visual p.small { font-size: 0.9rem; color: #9fb3c8; margin-bottom: 24px; }
+  .scope-list { list-style: none; display: grid; gap: 12px; }
+  .scope-list li { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09); border-radius: 9px; padding: 12px 16px; }
+  .scope-list li::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--accent); flex: none; }
+
+  /* Testimonial */
+  .quote {
+    max-width: 820px; margin: 0 auto; text-align: center;
+  }
+  .quote blockquote { font-size: clamp(1.15rem, 2.4vw, 1.5rem); color: var(--ink); font-weight: 500; line-height: 1.55; }
+  .quote blockquote::before { content: "“"; display: block; font-size: 4.5rem; line-height: 0.6; color: var(--accent); font-family: Georgia, serif; margin-bottom: 18px; }
+  .quote cite { display: block; margin-top: 22px; font-style: normal; font-size: 0.92rem; color: var(--body); }
+
+  /* Contact */
+  .contact-band {
+    background: linear-gradient(160deg, var(--navy) 0%, var(--steel) 100%);
+    color: #c9d6e2;
+  }
+  .contact-band h2, .contact-band h3 { color: #fff; }
+  .contact-band .sec-head p { color: #b8c7d6; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .contact-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 30px; }
+  .contact-card h3 { font-size: 1.05rem; margin-bottom: 16px; }
+  .contact-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
+  .contact-item .ci { flex: none; width: 38px; height: 38px; border-radius: 9px; background: rgba(245,158,11,0.15); color: var(--accent); display: grid; place-items: center; }
+  .contact-item a { color: #fff; font-weight: 600; }
+  .contact-item span.lbl { display: block; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.2px; color: #8ea4b8; }
+  .hours { font-size: 0.92rem; }
+
+  /* Footer */
+  footer { background: var(--navy); color: #8ea4b8; padding: 34px 0; font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.08); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  footer a { color: #c9d6e2; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 920px) {
+    .grid.cols-3 { grid-template-columns: repeat(2, 1fr); }
+    .steps { grid-template-columns: repeat(2, 1fr); }
+    .split, .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    nav.links {
+      display: none; position: absolute; top: 68px; left: 0; right: 0;
+      background: var(--navy); flex-direction: column; padding: 20px 24px; gap: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); align-items: flex-start;
+    }
+    nav.links.open { display: flex; }
+    .menu-toggle { display: block; }
+    .grid.cols-3, .grid.cols-2, .steps { grid-template-columns: 1fr; }
+    section { padding: 60px 0; }
+    .hero { padding: 64px 0 56px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="DPR Controls home">
+      <span class="mark">DPR</span>
+      <span>DPR Controls<small>Control &amp; Automation Engineers</small></span>
+    </a>
+    <button class="menu-toggle" aria-label="Toggle navigation" onclick="document.getElementById('navlinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="links" id="navlinks">
+      <a href="#services">Services</a>
+      <a href="#migration">Migrations</a>
+      <a href="#about">Why DPR</a>
+      <a href="#contact" class="cta-btn">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="wrap">
+      <span class="kicker">Congleton, Cheshire · Serving UK manufacturing</span>
+      <h1>Control systems engineering you can <em>rely on</em></h1>
+      <p class="lede">DPR Controls is an independent team of highly experienced control systems engineers delivering a lean, professional service to the manufacturing sector — from simple machine control to complete plant automation, raw material intake through to bulk outloading and packing.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#contact">Discuss your project</a>
+        <a class="btn btn-ghost" href="#services">Explore our services</a>
+      </div>
+      <div class="hero-badges">
+        <div><strong>PLC · SCADA · HMI</strong><span>Full-stack automation software</span></div>
+        <div><strong>Siemens &amp; Allen-Bradley</strong><span>Multi-platform expertise</span></div>
+        <div><strong>Minimal downtime</strong><span>Phased migrations, proven on site</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platforms strip -->
+  <div class="platforms" aria-label="Platform expertise">
+    <div class="wrap">
+      <span class="label">Platform expertise</span>
+      <b>Siemens S7 / TIA Portal</b>
+      <b>WinCC &amp; WinCC Unified</b>
+      <b>Allen-Bradley / Rockwell</b>
+      <b>Industrial networks</b>
+      <b>Drives &amp; motion</b>
+    </div>
+  </div>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">What we do</span>
+        <h2>One partner for your whole control system</h2>
+        <p>Hardware, software, panels and installation — designed, built, tested and commissioned by the same engineers, to your standards and the latest directives.</p>
+      </div>
+      <div class="grid cols-3">
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3>PLC &amp; Software Engineering</h3>
+          <p>Well-structured, maintainable PLC code for anything from a single machine controller to complete plant automation, written to your site standards and fully documented.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>SCADA &amp; HMI Systems</h3>
+          <p>Clear, operator-friendly visualisation with alarming, trending and reporting — giving your team the information they need to run the plant with confidence.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </div>
+          <h3>System Migration &amp; Upgrade</h3>
+          <p>Obsolete PLC, SCADA/HMI and network migrations planned around production — from large multi-PLC systems with phased implementation to small single-machine upgrades.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+          </div>
+          <h3>Panel Building</h3>
+          <p>Control panels built and tested in-house to your standards and the latest directives, using the highest quality materials and components, with rigorous quality control throughout.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <h3>Electrical Installation</h3>
+          <p>Complete site installation services to bring projects from panel to production — including line relocations, new installations and plant re-commissioning.</p>
+        </div>
+        <div class="card">
+          <div class="icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3>Troubleshooting &amp; Support</h3>
+          <p>Fast, practical help when production is at risk — fault-finding, breakdown support and ongoing system care from engineers who know how plants really run.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Migration process -->
+  <section id="migration" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Migrations &amp; upgrades</span>
+        <h2>Obsolete systems, migrated with minimal downtime</h2>
+        <p>Ageing control systems carry real risk: unavailable spares, lost production and rising support costs. Our engineers have delivered smooth, efficient migrations time and again — here's how we approach them.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <h3>Assess</h3>
+          <p>A detailed assessment of your existing control system: spares availability, impact of lost production, support costs, connectivity and room for future expansion.</p>
+        </div>
+        <div class="step">
+          <h3>Plan</h3>
+          <p>A migration strategy built around your production schedule — phased implementation for large multi-PLC systems, or a straight swap where that's the right answer.</p>
+        </div>
+        <div class="step">
+          <h3>Migrate</h3>
+          <p>PLC hardware and software upgraded alongside SCADA/HMI and communication networks where applicable, tested thoroughly before anything goes live.</p>
+        </div>
+        <div class="step">
+          <h3>Commission</h3>
+          <p>On-site commissioning and handover with your operators and engineers, taking the lead role in plant re-commissioning so production restarts on schedule.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About / why -->
+  <section id="about">
+    <div class="wrap split">
+      <div>
+        <span class="kicker" style="color: var(--accent-dark)">Why DPR Controls</span>
+        <h2 style="font-size: clamp(1.6rem, 3vw, 2.25rem); margin: 14px 0;">Experienced engineers. Lean delivery. No surprises.</h2>
+        <p>DPR Controls was founded by a team of highly experienced control systems engineers with one goal: to give manufacturers a friendly, professional and committed service for all their control and automation needs — without the overheads and delays of a large systems house.</p>
+        <div class="points">
+          <div class="point"><span class="tick">✓</span><p><b>Senior engineers on every job.</b> The people who scope your project are the people who deliver it.</p></div>
+          <div class="point"><span class="tick">✓</span><p><b>Built and tested to your standards.</b> Every panel and every line of code is subject to rigorous quality control before it reaches site.</p></div>
+          <div class="point"><span class="tick">✓</span><p><b>Production comes first.</b> Tight shutdown windows and phased changeovers are our normal working environment, not an exception.</p></div>
+          <div class="point"><span class="tick">✓</span><p><b>End-to-end capability.</b> Design, software, panels, installation and commissioning from a single accountable team.</p></div>
+        </div>
+      </div>
+      <div class="panel-visual">
+        <h3>Complete plant automation</h3>
+        <p class="small">From simple machine control to full production lines, we cover the whole process:</p>
+        <ul class="scope-list">
+          <li>Raw material intake &amp; handling</li>
+          <li>Process &amp; batch control</li>
+          <li>Manufacturing &amp; machine control</li>
+          <li>Packing lines</li>
+          <li>Bulk outloading</li>
+          <li>Plant-wide networks &amp; reporting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="alt">
+    <div class="wrap quote">
+      <blockquote>DPR Controls have recently worked on two major line relocations, including a PLC hardware &amp; software upgrade and a new electrical installation. This was all completed smoothly, and within a tight time schedule. DPR took the lead role in the plant re-commissioning.</blockquote>
+      <cite>— Manufacturing client, major line relocation project</cite>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact-band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">Contact us</span>
+        <h2>Tell us about your project</h2>
+        <p>Whether it's an obsolete PLC that's keeping you up at night, a new line to automate, or a breakdown that needs fresh eyes — we'd like to hear from you.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>Get in touch</h3>
+          <div class="contact-item">
+            <div class="ci" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div><span class="lbl">Phone</span><a href="tel:+441260278473">01260 278473</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div><span class="lbl">Email</span><a href="mailto:mail@dprcontrols.com">mail@dprcontrols.com</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="ci" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div><span class="lbl">Address</span><a href="https://maps.google.com/?q=Riverside,+Mountbatten+Way,+Congleton,+Cheshire,+CW12+1DY" target="_blank" rel="noopener">Riverside, Mountbatten Way,<br>Congleton, Cheshire, CW12 1DY</a></div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <h3>What happens next</h3>
+          <p class="hours" style="margin-bottom: 18px;">Send us a short description of your system or project and we'll come back to you promptly — usually the same working day.</p>
+          <p class="hours" style="margin-bottom: 18px;">For migration and upgrade enquiries, we typically start with a free initial conversation about your existing hardware, spares position and production constraints, followed by a site visit where useful.</p>
+          <a class="btn btn-primary" href="mailto:mail@dprcontrols.com?subject=Project%20enquiry">Email us about a project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="yr">2026</span> DPR Controls Ltd. Registered in England &amp; Wales, company no. 07544010.</div>
+    <div><a href="tel:+441260278473">01260 278473</a> · <a href="mailto:mail@dprcontrols.com">mail@dprcontrols.com</a></div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  // Close the mobile menu after choosing a link
+  document.querySelectorAll('#navlinks a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      document.getElementById('navlinks').classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>
