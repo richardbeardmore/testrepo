@@ -1,4 +1,4 @@
-"""DPR Controls Ltd brand assets shared by the viewer and the server.
+"""DPR Controls Ltd brand assets used to rebrand the viewer.
 
 Colours match the DPR Controls website (website/index.html).
 """

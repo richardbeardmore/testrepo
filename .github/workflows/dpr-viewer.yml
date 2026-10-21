@@ -1,0 +1,97 @@
+name: Build DPR Remote Viewer
+
+# Applies DPR Controls branding to a pinned TigerVNC release and builds the
+# viewer. The Windows job produces the installer; every job also uploads the
+# branded source tree, which must be offered alongside any binaries (GPL v2).
+
+on:
+  push:
+    paths:
+      - "dpr-viewer/**"
+      - ".github/workflows/dpr-viewer.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  TIGERVNC_TAG: v1.15.0
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: TigerVNC/tigervnc
+          ref: ${{ env.TIGERVNC_TAG }}
+          path: tigervnc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Apply DPR branding
+        run: |
+          pip install -r dpr-viewer/requirements.txt
+          python dpr-viewer/rebrand.py tigervnc
+      - uses: msys2/setup-msys2@v2
+      - name: Install build dependencies
+        shell: msys2 {0}
+        run: |
+          pacman --sync --noconfirm --needed \
+            make mingw-w64-x86_64-toolchain mingw-w64-x86_64-cmake
+          pacman --sync --noconfirm --needed \
+            mingw-w64-x86_64-libjpeg-turbo \
+            mingw-w64-x86_64-gnutls mingw-w64-x86_64-pixman \
+            mingw-w64-x86_64-nettle mingw-w64-x86_64-gmp
+          # TigerVNC 1.15 needs FLTK 1.3; MSYS2 now only packages 1.4.
+          pacman --upgrade --noconfirm --needed \
+            https://mirror.msys2.org/mingw/mingw64/mingw-w64-x86_64-fltk-1.3.9-2-any.pkg.tar.zst
+      - name: Build viewer and installer
+        shell: msys2 {0}
+        env:
+          MSYS2_PATH_TYPE: inherit  # so Inno Setup's iscc is found
+        run: |
+          cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TYPE=Release -DBUILD_WINVNC=OFF \
+            -S tigervnc -B build
+          make -C build vncviewer
+          make -C build installer
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DPR-Remote-Viewer-Windows
+          path: build/release/DPR-Remote-Viewer*.exe
+
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: TigerVNC/tigervnc
+          ref: ${{ env.TIGERVNC_TAG }}
+          path: tigervnc
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++ libfltk1.3-dev libgnutls28-dev \
+            libpixman-1-dev libjpeg-dev zlib1g-dev gettext nettle-dev libgmp-dev \
+            libxtst-dev libxrandr-dev libxdamage-dev libxi-dev libxcursor-dev \
+            libxinerama-dev libxft-dev libpam0g-dev python3-pil
+      - name: Apply DPR branding
+        run: python3 dpr-viewer/rebrand.py tigervnc
+      - name: Build viewer
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Release -S tigervnc -B build
+          make -C build -j"$(nproc)" vncviewer
+      - name: Package branded source (GPL corresponding source)
+        run: tar --exclude=.git -czf DPR-Remote-Viewer-source.tar.gz tigervnc dpr-viewer
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DPR-Remote-Viewer-Linux
+          path: build/vncviewer/vncviewer
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DPR-Remote-Viewer-source
+          path: DPR-Remote-Viewer-source.tar.gz
