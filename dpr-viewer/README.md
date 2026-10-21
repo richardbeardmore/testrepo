@@ -58,7 +58,10 @@ make -C build vncviewer
 ```
 
 On Windows, use MSYS2 as shown in the workflow. TigerVNC can't be built with
-Visual Studio.
+Visual Studio. The Windows build is linked statically, so the installer has no
+dependencies, and it is built without Nettle because TigerVNC 1.15 doesn't
+compile against MSYS2's Nettle 4. That only removes TigerVNC's own RSA-AES
+encryption and UltraVNC MS-Logon; VNC password and TLS still work.
 
 ## Connecting to RealVNC Server
 
