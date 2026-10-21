@@ -133,8 +133,26 @@ def replacements(source_url):
     }
 
 
+# Build fixes for current toolchains, backported from upstream TigerVNC.
+# These are not branding; drop each one once a TigerVNC release includes it.
+COMPAT_FIXES = {
+    # Upstream b752a331: "Don't redefine close() as that easily breaks".
+    # Recent MinGW headers declare closesocket() after this macro.
+    "common/rdr/FdInStream.cxx": [
+        ("#define errorNumber WSAGetLastError()\n#define close closesocket\n",
+         "#define errorNumber WSAGetLastError()\n"),
+        ("#define errorNumber errno\n#endif",
+         "#define errorNumber errno\n#define closesocket close\n#endif"),
+        ("if (closeWhenDone) close(fd);", "if (closeWhenDone) closesocket(fd);"),
+    ],
+}
+
+
 def apply_replacements(root, source_url):
-    for rel, pairs in replacements(source_url).items():
+    edits = {**replacements(source_url)}
+    for rel, pairs in COMPAT_FIXES.items():
+        edits[rel] = edits.get(rel, []) + pairs
+    for rel, pairs in edits.items():
         path = root / rel
         text = path.read_text(encoding="utf-8")
         for old, new, *expected in pairs:
@@ -145,7 +163,7 @@ def apply_replacements(root, source_url):
                          f"Is this TigerVNC {SUPPORTED_TAG}?")
             text = text.replace(old, new)
         path.write_text(text, encoding="utf-8")
-        print(f"branded {rel}")
+        print(f"patched {rel}")
 
 
 SVG = """<?xml version="1.0" encoding="UTF-8"?>
