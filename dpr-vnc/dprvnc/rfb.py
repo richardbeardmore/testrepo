@@ -3,12 +3,16 @@
 import struct
 from dataclasses import dataclass
 
-import numpy as np
-
 # Security types
 SEC_INVALID = 0
 SEC_NONE = 1
 SEC_VNC_AUTH = 2
+
+# Security types offered by RealVNC, TightVNC etc. that this viewer does not support
+SECURITY_NAMES = {
+    5: "RealVNC RA2", 6: "RealVNC RA2ne", 13: "RealVNC RA2_256", 16: "Tight",
+    18: "TLS", 19: "VeNCrypt", 30: "Apple ARD", 129: "Unix login",
+}
 
 # Client -> server messages
 MSG_SET_PIXEL_FORMAT = 0
@@ -118,59 +122,6 @@ class PixelFormat:
     def bytes_per_pixel(self):
         return self.bpp // 8
 
-    @property
-    def dtype(self):
-        base = {8: "u1", 16: "u2", 32: "u4"}[self.bpp]
-        return np.dtype((">" if self.big_endian else "<") + base)
-
-    def cpixel_slice(self):
-        """Byte slice of a pixel that forms a ZRLE CPIXEL (RFC 6143 7.7.6).
-
-        CPIXELs are 3 bytes when the format is 32bpp true colour of depth
-        <= 24 and all colour bits fit in the 3 least (or most) significant
-        bytes; otherwise they are the full pixel.
-        """
-        if self.bpp == 32 and self.true_colour and self.depth <= 24:
-            mask = ((self.red_max << self.red_shift) | (self.green_max << self.green_shift)
-                    | (self.blue_max << self.blue_shift))
-            if mask < 1 << 24:  # fits in least significant bytes
-                return slice(0, 3) if not self.big_endian else slice(1, 4)
-            if mask & 0xFF == 0:  # fits in most significant bytes
-                return slice(1, 4) if not self.big_endian else slice(0, 3)
-        return slice(0, self.bytes_per_pixel)
-
-    def from_rgb(self, rgb):
-        """Convert an (h, w, 3) uint8 RGB array into packed pixel bytes (h, w) array."""
-        r = rgb[..., 0].astype(np.uint32)
-        g = rgb[..., 1].astype(np.uint32)
-        b = rgb[..., 2].astype(np.uint32)
-        if self.true_colour:
-            v = ((r * self.red_max + 127) // 255) << self.red_shift
-            v |= ((g * self.green_max + 127) // 255) << self.green_shift
-            v |= ((b * self.blue_max + 127) // 255) << self.blue_shift
-        else:
-            # Colour-map formats use the fixed BGR233 map sent by the server.
-            v = (r >> 5) | ((g >> 5) << 3) | ((b >> 6) << 6)
-        return v.astype(self.dtype)
-
-    def to_rgb(self, pixels):
-        """Convert an array of pixel values (any shape) into uint8 RGB (shape + (3,))."""
-        v = pixels.astype(np.uint32)
-        out = np.empty(pixels.shape + (3,), np.uint8)
-        for i, (mx, sh) in enumerate(((self.red_max, self.red_shift),
-                                      (self.green_max, self.green_shift),
-                                      (self.blue_max, self.blue_shift))):
-            out[..., i] = ((v >> sh) & mx) * 255 // max(mx, 1)
-        return out
-
-
-def bgr233_colour_map():
-    """Colour map entries (r, g, b as 16-bit) matching PixelFormat.from_rgb for colour-map clients."""
-    entries = []
-    for i in range(256):
-        r, g, b = i & 7, (i >> 3) & 7, (i >> 6) & 3
-        entries.append((r * 65535 // 7, g * 65535 // 7, b * 65535 // 3))
-    return entries
 
 
 def parse_display(target, default_port=5900):
